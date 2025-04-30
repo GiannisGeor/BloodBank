@@ -69,7 +69,7 @@ export default function ProtectedPage({ children }) {
         </div>
 
         {/* body */}
-        <div className="px-5 py-1">{children}</div>
+        <div className="px-5 py-2">{children}</div>
       </div>
     )
   );

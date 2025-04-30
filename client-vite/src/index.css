@@ -43,3 +43,7 @@ a:hover {
 i {
   font-size: 18px;
 }
+
+.ant-form-item-label {
+  padding: 0 !important;
+}
