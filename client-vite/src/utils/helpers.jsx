@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const getLoggedinUserName = (user) => {
   if (user.userType === "donor") {
     return "Αιμοδότη";
@@ -15,4 +17,8 @@ export const getAntdInputValidation = () => {
       message: "Required",
     },
   ];
+};
+
+export const getDateFormat = (date) => {
+  return dayjs(date).format("DD MMM YYYY hh:mm A");
 };

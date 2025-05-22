@@ -50,6 +50,15 @@ router.post("/login", async (req, res) => {
         message: "Λάθος στοιχεία σύνδεσης",
       });
     }
+
+    // check if userType matches
+    if (user.userType !== req.body.userType) {
+      return res.send({
+        success: false,
+        message: `Ο χρήστης δεν είναι εγγεγραμμένος ως ${req.body.userType}`,
+      });
+    }
+
     //compare passwords
     const validPassword = await bcrypt.compare(
       req.body.password,
