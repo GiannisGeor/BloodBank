@@ -19,6 +19,7 @@ function InventoryForm({ open, setOpen, reloadData }) {
       });
       dispatch(SetLoading(false));
       if (response.success) {
+        reloadData();
         message.success("Inventory Added Successfully");
         setOpen(false);
       } else {
@@ -65,10 +66,10 @@ function InventoryForm({ open, setOpen, reloadData }) {
             <option value="a-">A-</option>
             <option value="b+">B+</option>
             <option value="b-">B-</option>
-            <option value="o+">AB+</option>
-            <option value="o-">AB-</option>
-            <option value="ab+">O+</option>
-            <option value="ab-">O-</option>
+            <option value="o+">O+</option>
+            <option value="o-">O-</option>
+            <option value="ab+">AB+</option>
+            <option value="ab-">AB-</option>
           </select>
         </Form.Item>
 
