@@ -13,3 +13,11 @@ export const GetCurrentUser = async () => {
   const response = await axiosInstance("get", "/api/users/get-current-user");
   return response;
 };
+
+export const GetAllDonorsOfAnOrganization = () => {
+  return axiosInstance("get", `/api/users/get-all-donors`);
+};
+
+export const GetAllHospitalsOfAnOrganization = () => {
+  return axiosInstance("get", `/api/users/get-all-hospitals`);
+};

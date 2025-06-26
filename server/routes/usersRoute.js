@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware.jsx");
+const Inventory = require("../models/inventoryModel.js");
+const mongoose = require("mongoose");
+
 //register a new user
 router.post("/register", async (req, res) => {
   try {
@@ -97,6 +100,58 @@ router.get("/get-current-user", authMiddleware, async (req, res) => {
       success: true,
       message: "Ο χρήστης ανακτήθηκε",
       data: user,
+    });
+  } catch (error) {
+    return res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//get all unique donors
+router.get("/get-all-donors", authMiddleware, async (req, res) => {
+  try {
+    // get all unique donor ids from inventory
+    const organization = new mongoose.Types.ObjectId(req.body.userId);
+    const uniqueDonorids = await Inventory.distinct("donor", {
+      organization,
+    });
+
+    const donors = await User.find({
+      _id: { $in: uniqueDonorids },
+    });
+
+    return res.send({
+      success: true,
+      message: "Οι αιμοδότες ανακτήθηκαν επιτυχώς",
+      data: donors,
+    });
+  } catch (error) {
+    return res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//get all unique hospitals
+router.get("/get-all-hospitals", authMiddleware, async (req, res) => {
+  try {
+    // get all unique hospital ids from inventory
+    const organization = new mongoose.Types.ObjectId(req.body.userId);
+    const uniqueHospitalIds = await Inventory.distinct("hospital", {
+      organization,
+    });
+
+    const donors = await User.find({
+      _id: { $in: uniqueHospitalIds },
+    });
+
+    return res.send({
+      success: true,
+      message: "Τα νοσοκομεία ανακτήθηκαν επιτυχώς",
+      data: donors,
     });
   } catch (error) {
     return res.send({
