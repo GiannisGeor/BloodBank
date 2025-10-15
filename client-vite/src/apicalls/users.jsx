@@ -21,3 +21,7 @@ export const GetAllDonorsOfAnOrganization = () => {
 export const GetAllHospitalsOfAnOrganization = () => {
   return axiosInstance("get", `/api/users/get-all-hospitals`);
 };
+
+export const GetAllOrganizationsOfADonor = () => {
+  return axiosInstance("get", `/api/users/get-all-organizations-of-a-donor`);
+};
