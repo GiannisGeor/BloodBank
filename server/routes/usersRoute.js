@@ -191,4 +191,34 @@ router.get(
   }
 );
 
+//get all unique organizations for a hospital
+router.get(
+  "/get-all-organizations-of-a-hospital",
+  authMiddleware,
+  async (req, res) => {
+    try {
+      // get all unique organizations ids from inventory
+      const hospital = new mongoose.Types.ObjectId(req.body.userId);
+      const uniqueOrganizationIds = await Inventory.distinct("organization", {
+        hospital,
+      });
+
+      const donors = await User.find({
+        _id: { $in: uniqueOrganizationIds },
+      });
+
+      return res.send({
+        success: true,
+        message: "Οι οργανισμοί ανακτήθηκαν επιτυχώς",
+        data: donors,
+      });
+    } catch (error) {
+      return res.send({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+);
+
 module.exports = router;

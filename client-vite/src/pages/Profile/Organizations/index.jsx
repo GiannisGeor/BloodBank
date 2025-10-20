@@ -1,17 +1,25 @@
 import React from "react";
-import { GetAllOrganizationsOfADonor } from "../../../apicalls/users";
+import {
+  GetAllOrganizationsOfADonor,
+  GetAllOrganizationsOfAHospital,
+} from "../../../apicalls/users";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../../redux/loadersSlice";
 import { message, Table } from "antd";
 import { getDateFormat } from "../../../utils/helpers";
 
-function Organizations() {
+function Organizations({ userType }) {
   const [data, setData] = React.useState([]);
   const dispatch = useDispatch();
   const getData = async () => {
     try {
-      dispatch(SetLoading);
-      const response = await GetAllOrganizationsOfADonor();
+      dispatch(SetLoading(true));
+      let response = null;
+      if (userType === "hospital") {
+        response = await GetAllOrganizationsOfAHospital();
+      } else {
+        response = await GetAllOrganizationsOfADonor();
+      }
       dispatch(SetLoading(false));
       if (response.success) {
         setData(response.data);
@@ -27,7 +35,7 @@ function Organizations() {
   const columns = [
     {
       title: "Name",
-      dataIndex: "OrganizationName",
+      dataIndex: "organizationName",
     },
     {
       title: "Email",

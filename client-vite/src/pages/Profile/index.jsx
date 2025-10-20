@@ -28,9 +28,18 @@ function Profile() {
 
         {currentUser.userType === "donor" && (
           <>
-            <Tabs.TabPane tab="Δωρεές" key="3"></Tabs.TabPane>
-            <Tabs.TabPane tab="Οργανισμοί" key="3">
+            <Tabs.TabPane tab="Δωρεές" key="4"></Tabs.TabPane>
+            <Tabs.TabPane tab="Οργανισμοί" key="5">
               <Organizations />
+            </Tabs.TabPane>
+          </>
+        )}
+
+        {currentUser.userType === "hospital" && (
+          <>
+            <Tabs.TabPane tab="Κατανάλωση" key="6"></Tabs.TabPane>
+            <Tabs.TabPane tab="Οργανισμοί" key="7">
+              <Organizations userType="hospital" />
             </Tabs.TabPane>
           </>
         )}
