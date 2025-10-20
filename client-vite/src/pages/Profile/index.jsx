@@ -29,7 +29,15 @@ function Profile() {
 
         {currentUser.userType === "donor" && (
           <>
-            <Tabs.TabPane tab="Δωρεές" key="4"></Tabs.TabPane>
+            <Tabs.TabPane tab="Δωρεές" key="4">
+              <InventoryTable
+                filters={{
+                  inventoryType: "in",
+                  donor: currentUser._id,
+                }}
+                userType="donor"
+              />
+            </Tabs.TabPane>
             <Tabs.TabPane tab="Οργανισμοί" key="5">
               <Organizations />
             </Tabs.TabPane>
