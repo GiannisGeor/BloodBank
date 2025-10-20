@@ -100,4 +100,18 @@ router.get("/get", authMiddleware, async (req, res) => {
   }
 });
 
+//get inventory
+router.post("/filter", authMiddleware, async (req, res) => {
+  try {
+    const inventory = await Inventory.find(req.body.filters)
+      .sort({ createdAt: -1 })
+      .populate("donor")
+      .populate("hospital")
+      .populate("organization");
+    return res.send({ success: true, data: inventory });
+  } catch (error) {
+    return res.send({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;

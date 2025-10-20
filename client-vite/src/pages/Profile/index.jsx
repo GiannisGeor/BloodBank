@@ -5,6 +5,7 @@ import Inventory from "../Inventory";
 import Donors from "./Donors";
 import Hospitals from "./Hospitals";
 import Organizations from "./Organizations";
+import InventoryTable from "../../components/InventoryTable";
 
 function Profile() {
   const { currentUser } = useSelector((state) => state.users);
@@ -37,7 +38,15 @@ function Profile() {
 
         {currentUser.userType === "hospital" && (
           <>
-            <Tabs.TabPane tab="Κατανάλωση" key="6"></Tabs.TabPane>
+            <Tabs.TabPane tab="Κατανάλωση" key="6">
+              <InventoryTable
+                filters={{
+                  inventoryType: "out",
+                  hospital: currentUser._id,
+                }}
+                userType="hospital"
+              />
+            </Tabs.TabPane>
             <Tabs.TabPane tab="Οργανισμοί" key="7">
               <Organizations userType="hospital" />
             </Tabs.TabPane>
