@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Inventory = require("../models/inventoryModel"); // Note: Model not Modal
+const Inventory = require("../models/inventoryModel");
 const User = require("../models/userModel");
 const authMiddleware = require("../middlewares/authMiddleware.jsx");
 const mongoose = require("mongoose");
