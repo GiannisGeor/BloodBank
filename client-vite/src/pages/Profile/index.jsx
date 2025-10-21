@@ -39,7 +39,7 @@ function Profile() {
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Οργανισμοί" key="5">
-              <Organizations />
+              <Organizations userType="donor" />
             </Tabs.TabPane>
           </>
         )}

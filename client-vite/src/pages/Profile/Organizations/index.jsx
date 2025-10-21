@@ -3,12 +3,16 @@ import {
   GetAllOrganizationsOfADonor,
   GetAllOrganizationsOfAHospital,
 } from "../../../apicalls/users";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetLoading } from "../../../redux/loadersSlice";
-import { message, Table } from "antd";
+import { message, Modal, Table } from "antd";
 import { getDateFormat } from "../../../utils/helpers";
+import InventoryTable from "../../../components/InventoryTable";
 
 function Organizations({ userType }) {
+  const [showHistoryModal, setShowHistoryModal] = React.useState(false);
+  const { currentUser } = useSelector((state) => state.users);
+  const [selectedOrganization, setSelectedOrganization] = React.useState(null);
   const [data, setData] = React.useState([]);
   const dispatch = useDispatch();
   const getData = async () => {
@@ -54,6 +58,21 @@ function Organizations({ userType }) {
       dataIndex: "createdAt",
       render: (text) => getDateFormat(text),
     },
+    {
+      title: "Action",
+      dataIndex: "Action",
+      render: (text, record) => (
+        <span
+          className="underline text-md cursor-pointer"
+          onClick={() => {
+            setSelectedOrganization(record);
+            setShowHistoryModal(true);
+          }}
+        >
+          Ιστορικό
+        </span>
+      ),
+    },
   ];
 
   React.useEffect(() => {
@@ -62,6 +81,25 @@ function Organizations({ userType }) {
   return (
     <div>
       <Table columns={columns} dataSource={data} />
+      {showHistoryModal && (
+        <Modal
+          title={`${
+            userType === "donor" ? "Ιστορικό Δωρεών" : "Ιστορικό Κατανάλωσης"
+          } σε ${selectedOrganization.organizationName}`}
+          centered
+          open={showHistoryModal}
+          onClose={() => setShowHistoryModal(false)}
+          width={1000}
+          onCancel={() => setShowHistoryModal(false)}
+        >
+          <InventoryTable
+            filters={{
+              organization: selectedOrganization._id,
+              [userType]: currentUser._id,
+            }}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
