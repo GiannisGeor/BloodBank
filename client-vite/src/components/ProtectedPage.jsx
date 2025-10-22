@@ -40,7 +40,7 @@ export default function ProtectedPage({ children }) {
     currentUser && (
       <div>
         {/* header */}
-        <div className="flex justify-between items-center bg-primary text-black px-5 py-3">
+        <div className="flex justify-between items-center bg-primary text-black px-5 py-3 mx-5 rounded-b">
           <div onClick={() => navigate("/")} className="cursor-pointer">
             <h1 className="text-2xl">Κέντρο Αιμοδοσίας</h1>
             <span className="text-xs">
@@ -69,7 +69,7 @@ export default function ProtectedPage({ children }) {
         </div>
 
         {/* body */}
-        <div className="px-5 py-2">{children}</div>
+        <div className="px-5 py-5">{children}</div>
       </div>
     )
   );

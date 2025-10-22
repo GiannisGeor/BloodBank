@@ -7,6 +7,7 @@ import { GetAllBloodBroupsInInventory } from "../../apicalls/dashboard";
 import { SetLoading } from "../../redux/loadersSlice";
 import { message } from "antd";
 import { getLoggedinUserName } from "../../utils/helpers";
+import InventoryTable from "../../components/InventoryTable";
 
 function Home() {
   const { currentUser } = useSelector((state) => state.users);
@@ -45,10 +46,10 @@ function Home() {
   ];
   return (
     <div>
-      <span className="text-primary text-2xl">
+      <span className="text-grey-700 text-2xl font-semibold">
         Καλώς ήρθες {getLoggedinUserName(currentUser)}
       </span>
-      <div className="grid grid-cols-4 gap-5 mt-5">
+      <div className="grid grid-cols-4 gap-5 mb-5 mt-2">
         {bloodGroupsData.map((bloodGroup, index) => {
           const color = colours[index];
           return (
@@ -75,6 +76,18 @@ function Home() {
           );
         })}
       </div>
+
+      <span className="text-xl text-grey-700 font-semibold">
+        Το πρόσφατο απόθεμα σας
+      </span>
+
+      <InventoryTable
+        filters={{
+          organization: currentUser._id,
+        }}
+        limit={5}
+        userType={currentUser.userType}
+      />
     </div>
   );
 }
