@@ -38,7 +38,7 @@ function Organizations({ userType }) {
 
   const columns = [
     {
-      title: "Name",
+      title: "Όνομα",
       dataIndex: "organizationName",
     },
     {
@@ -46,15 +46,15 @@ function Organizations({ userType }) {
       dataIndex: "email",
     },
     {
-      title: "Phone",
+      title: "Τηλέφωνο",
       dataIndex: "phone",
     },
     {
-      title: "Address",
+      title: "Οδός",
       dataIndex: "address",
     },
     {
-      title: "Created At",
+      title: "Ημερομηνία Δημιουργίας",
       dataIndex: "createdAt",
       render: (text) => getDateFormat(text),
     },

@@ -16,26 +16,46 @@ function InventoryTable({ filters, userType, limit }) {
       render: (text) => text.toUpperCase(),
     },
     {
-      title: "Blood Group",
+      title: "Ομάδα Αίματος ",
       dataIndex: "bloodGroup",
       render: (text) => text.toUpperCase(),
     },
     {
-      title: "Quantity",
+      title: "Ποσότητα",
       dataIndex: "quantity",
       render: (text) => text + "ML",
     },
     {
-      title: "Reference",
+      title: "Αναφορά",
       dataIndex: "reference",
-      render: (text, record) => record.organization.organizationName,
+      render: (text, record) => {
+        if (userType === "organization") {
+          return record.inventoryType === "IN"
+            ? record.donor?.name
+            : record.hospital?.hospitalName;
+        } else {
+          return record.organization.organizationName;
+        }
+      },
     },
     {
-      title: "Date",
+      title: "Ημερομηνία",
       dataIndex: "createdAt",
       render: (text) => getDateFormat(text),
     },
   ];
+
+  //change columns for hOspital or donor
+  if (userType !== "organization") {
+    //remove inventory column
+    columns.splice(0, 1);
+    //change ref column to org name
+    columns[2].title = "Οργανισμός";
+
+    //Date column to taken date
+    columns[3].title =
+      userType === "hospital" ? "Ημερομηνία Ανάληψης" : "Ημερομηνία Αιμοδοσίας";
+  }
 
   const getData = async () => {
     try {
