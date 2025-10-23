@@ -30,7 +30,7 @@ function InventoryTable({ filters, userType, limit }) {
       dataIndex: "reference",
       render: (text, record) => {
         if (userType === "organization") {
-          return record.inventoryType === "IN"
+          return record.inventoryType === "in"
             ? record.donor?.name
             : record.hospital?.hospitalName;
         } else {
