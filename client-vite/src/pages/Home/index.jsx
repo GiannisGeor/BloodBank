@@ -62,7 +62,7 @@ function Home() {
                   <div className="flex flex-col justify-between gap-2">
                     <div className="flex justify-between">
                       <span className="text-2xl">Σύνολο</span>
-                      <span>{bloodGroup.totalIn} ml</span>
+                      <span className="pt-[7px]">{bloodGroup.totalIn} ml</span>
                     </div>
                     <div className="flex justify-between gap-5">
                       <span>Σύνολο Εκτός</span>
