@@ -31,13 +31,15 @@ function Home() {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (currentUser) {
+      getData();
+    }
+  }, [currentUser?._id]);
 
   const colours = [
     "#657C6A",
     "#3C7B64",
-    " #3C5D7B ",
+    "#3C5D7B",
     "#1C352D",
     "#8C1007",
     "#8A93C6",
@@ -45,32 +47,39 @@ function Home() {
     "#222831",
   ];
   return (
-    <div>
+    <div className="px-2 sm:px-0">
       {currentUser.userType === "organization" && (
         <>
-          <div className="grid grid-cols-4 gap-5 mb-5 mt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-5 mt-2">
             {bloodGroupsData.map((bloodGroup, index) => {
               const color = colours[index];
               return (
                 <div
-                  className={`p-5 flex justify-between text-white rounded items-centered`}
+                  key={index}
+                  className="p-4 sm:p-5 flex flex-col sm:flex-row justify-between text-white rounded items-start sm:items-center gap-3"
                   style={{ backgroundColor: color }}
                 >
-                  <h1 className="text-5xl uppercase">
+                  <h1 className="text-4xl sm:text-5xl uppercase">
                     {bloodGroup.bloodGroup}
                   </h1>
-                  <div className="flex flex-col justify-between gap-2">
+                  <div className="flex flex-col justify-between gap-2 w-full sm:w-auto">
                     <div className="flex justify-between">
-                      <span className="text-2xl">Σύνολο</span>
-                      <span className="pt-[7px]">{bloodGroup.totalIn} ml</span>
+                      <span className="text-xl sm:text-2xl">Σύνολο</span>
+                      <span className="text-sm sm:text-base">
+                        {bloodGroup.totalIn} ml
+                      </span>
                     </div>
-                    <div className="flex justify-between gap-5">
-                      <span>Σύνολο Εκτός</span>
-                      <span>{bloodGroup.totalOut} ml</span>
+                    <div className="flex justify-between gap-3 sm:gap-5">
+                      <span className="text-sm sm:text-base">Σύνολο Εκτός</span>
+                      <span className="text-sm sm:text-base">
+                        {bloodGroup.totalOut} ml
+                      </span>
                     </div>
-                    <div className="flex justify-between gap-5">
-                      <span>Διαθέσιμο</span>
-                      <span>{bloodGroup.available} ml</span>
+                    <div className="flex justify-between gap-3 sm:gap-5">
+                      <span className="text-sm sm:text-base">Διαθέσιμο</span>
+                      <span className="text-sm sm:text-base">
+                        {bloodGroup.available} ml
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -78,7 +87,7 @@ function Home() {
             })}
           </div>
 
-          <span className="text-xl text-grey-700 font-semibold">
+          <span className="text-lg sm:text-xl text-grey-700 font-semibold block mb-3">
             Το πρόσφατο απόθεμα σας
           </span>
 
@@ -93,7 +102,7 @@ function Home() {
       )}
       {currentUser.userType === "donor" && (
         <div>
-          <span className="text-xl text-grey-700 font-semibold mt-5">
+          <span className="text-lg sm:text-xl text-grey-700 font-semibold block mb-3 mt-5">
             Το πρόσφατο απόθεμα σας
           </span>
           <InventoryTable
@@ -108,7 +117,7 @@ function Home() {
 
       {currentUser.userType === "hospital" && (
         <div>
-          <span className="text-xl text-grey-700 font-semibold mt-5">
+          <span className="text-lg sm:text-xl text-grey-700 font-semibold block mb-3 mt-5">
             Τα πρόσφατα αιτήματα σας / Καταναλώσεις
           </span>
           <InventoryTable

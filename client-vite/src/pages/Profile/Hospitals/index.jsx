@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { message, Table } from "antd";
 import {
   GetAllDonorsOfAnOrganization,
@@ -11,9 +11,11 @@ import { getDateFormat } from "../../../utils/helpers";
 function Hospitals() {
   const [data, setData] = React.useState([]);
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.users);
+
   const getData = async () => {
     try {
-      dispatch(SetLoading);
+      dispatch(SetLoading(true));
       const response = await GetAllHospitalsOfAnOrganization();
       dispatch(SetLoading(false));
       if (response.success) {
@@ -48,11 +50,16 @@ function Hospitals() {
   ];
 
   React.useEffect(() => {
-    getData();
-  }, []);
+    if (currentUser) {
+      getData();
+    }
+  }, [currentUser?._id]);
+
   return (
-    <div>
-      <Table columns={columns} dataSource={data} />
+    <div className="px-2 sm:px-0">
+      <div className="overflow-x-auto">
+        <Table columns={columns} dataSource={data} scroll={{ x: 800 }} />
+      </div>
     </div>
   );
 }

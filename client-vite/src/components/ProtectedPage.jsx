@@ -11,6 +11,7 @@ export default function ProtectedPage({ children }) {
   const { currentUser } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const getCurrentUser = async () => {
     try {
       dispatch(SetLoading(true));
@@ -25,10 +26,16 @@ export default function ProtectedPage({ children }) {
       }
     } catch (error) {
       dispatch(SetLoading(false));
-
       message.error(error.message);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(SetCurrentUser(null));
+    navigate("/login");
+  };
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getCurrentUser();
@@ -36,40 +43,38 @@ export default function ProtectedPage({ children }) {
       navigate("/login");
     }
   }, []);
+
   return (
     currentUser && (
       <div>
         {/* header */}
-        <div className="flex justify-between items-center bg-primary text-black px-5 py-3 mx-5 rounded-b">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-primary text-black px-5 sm:px-5 py-3 mx-4 sm:mx-5 rounded-b gap-3 sm:gap-0">
           <div onClick={() => navigate("/")} className="cursor-pointer">
-            <h1 className="text-2xl">Κέντρο Αιμοδοσίας</h1>
+            <h1 className="text-xl sm:text-2xl">Κέντρο Αιμοδοσίας</h1>
             <span className="text-xs">
               {currentUser.userType.toUpperCase()}
             </span>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <i className="ri-shield-user-line"></i>
             <div className="flex flex-col">
               <span
-                className="mr-5 text-md  cursor-pointer"
+                className="text-sm sm:text-md cursor-pointer"
                 onClick={() => navigate("/profile")}
               >
                 {getLoggedinUserName(currentUser).toUpperCase()}
               </span>
             </div>
             <i
-              className="ri-logout-circle-r-line ml-5 cursor-pointer"
-              onClick={() => {
-                localStorage.removeItem("token");
-                navigate("/login");
-              }}
+              className="ri-logout-circle-r-line cursor-pointer"
+              onClick={handleLogout}
             ></i>
           </div>
         </div>
 
         {/* body */}
-        <div className="px-5 py-5">{children}</div>
+        <div className="px-4 sm:px-5 py-5">{children}</div>
       </div>
     )
   );

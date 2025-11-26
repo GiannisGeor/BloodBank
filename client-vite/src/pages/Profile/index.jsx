@@ -11,7 +11,7 @@ function Profile() {
   const { currentUser } = useSelector((state) => state.users);
 
   return (
-    <div>
+    <div className="px-2 sm:px-0">
       <Tabs>
         {currentUser.userType === "organization" && (
           <>

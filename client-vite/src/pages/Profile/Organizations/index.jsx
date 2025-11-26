@@ -15,6 +15,7 @@ function Organizations({ userType }) {
   const [selectedOrganization, setSelectedOrganization] = React.useState(null);
   const [data, setData] = React.useState([]);
   const dispatch = useDispatch();
+
   const getData = async () => {
     try {
       dispatch(SetLoading(true));
@@ -76,11 +77,16 @@ function Organizations({ userType }) {
   ];
 
   React.useEffect(() => {
-    getData();
-  }, []);
+    if (currentUser) {
+      getData();
+    }
+  }, [currentUser?._id, userType]);
+
   return (
-    <div>
-      <Table columns={columns} dataSource={data} />
+    <div className="px-2 sm:px-0">
+      <div className="overflow-x-auto">
+        <Table columns={columns} dataSource={data} scroll={{ x: 800 }} />
+      </div>
       {showHistoryModal && (
         <Modal
           title={`${

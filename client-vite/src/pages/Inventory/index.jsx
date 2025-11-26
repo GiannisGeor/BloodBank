@@ -1,7 +1,7 @@
 import React from "react";
 import InventoryForm from "./InventoryForm";
 import { Button, message, Table } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GetInventory } from "../../apicalls/inventory";
 import { SetLoading } from "../../redux/loadersSlice";
 import { getDateFormat } from "../../utils/helpers";
@@ -10,6 +10,8 @@ function Inventory() {
   const [data, setData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.users);
+
   const columns = [
     {
       title: "Inventory Type",
@@ -31,9 +33,9 @@ function Inventory() {
       dataIndex: "reference",
       render: (text, record) => {
         if (record.inventoryType === "in") {
-          return record.donor.name;
+          return record.donor?.name;
         } else {
-          return record.hospital.hospitalName;
+          return record.hospital?.hospitalName;
         }
       },
     },
@@ -61,17 +63,22 @@ function Inventory() {
   };
 
   React.useEffect(() => {
-    getData();
-  }, []);
+    if (currentUser) {
+      getData();
+    }
+  }, [currentUser?._id]);
+
   return (
-    <div>
-      <div className="flex justify-end">
+    <div className="px-2 sm:px-0">
+      <div className="flex justify-end mb-3">
         <Button type="default" onClick={() => setOpen(true)}>
           Προσθήκη Αποθέματος
         </Button>
       </div>
 
-      <Table columns={columns} dataSource={data} className="mt-3" />
+      <div className="overflow-x-auto">
+        <Table columns={columns} dataSource={data} scroll={{ x: 800 }} />
+      </div>
 
       {open && (
         <InventoryForm open={open} setOpen={setOpen} reloadData={getData} />

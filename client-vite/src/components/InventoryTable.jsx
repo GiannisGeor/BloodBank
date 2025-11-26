@@ -16,7 +16,7 @@ function InventoryTable({ filters, userType, limit }) {
       render: (text) => text.toUpperCase(),
     },
     {
-      title: "Ομάδα Αίματος ",
+      title: "Ομάδα Αίματος",
       dataIndex: "bloodGroup",
       render: (text) => text.toUpperCase(),
     },
@@ -34,7 +34,7 @@ function InventoryTable({ filters, userType, limit }) {
             ? record.donor?.name
             : record.hospital?.hospitalName;
         } else {
-          return record.organization.organizationName;
+          return record.organization?.organizationName;
         }
       },
     },
@@ -45,7 +45,7 @@ function InventoryTable({ filters, userType, limit }) {
     },
   ];
 
-  //change columns for hOspital or donor
+  //change columns for hospital or donor
   if (userType !== "organization") {
     //remove inventory column
     columns.splice(0, 1);
@@ -75,10 +75,16 @@ function InventoryTable({ filters, userType, limit }) {
 
   React.useEffect(() => {
     getData();
-  }, []);
+  }, [JSON.stringify(filters), limit]); // Add filters and limit as dependencies
+
   return (
-    <div>
-      <Table columns={columns} dataSource={data} className="mt-3" />
+    <div className="mt-3 overflow-x-auto">
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{ x: 800 }}
+        pagination={{ pageSize: limit || 10 }}
+      />
     </div>
   );
 }

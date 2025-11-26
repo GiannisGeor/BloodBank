@@ -5,6 +5,7 @@ import { LoginUser } from "../../apicalls/users";
 import { useDispatch } from "react-redux";
 import { SetLoading } from "../../redux/loadersSlice";
 import { getAntdInputValidation } from "../../utils/helpers";
+
 const typeReadable = {
   donor: "Αιμοδότη",
   hospital: "Νοσοκομείου",
@@ -39,17 +40,14 @@ function Login() {
   }, []);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-primary">
+    <div className="flex min-h-screen items-center justify-center bg-primary px-4 py-8">
       <Form
-        layout="vertical "
-        className="bg-white rounded shadow grid  p-5 gap-5 w-1/2"
+        layout="vertical"
+        className="bg-white rounded shadow grid p-5 gap-5 w-full max-w-md"
         onFinish={onFinish}
       >
-        <h1 className=" ">
-          <span className="text-secondary">
-            {" "}
-            Σύνδεση - {typeReadable[type]}{" "}
-          </span>
+        <h1 className="">
+          <span className="text-secondary">Σύνδεση - {typeReadable[type]}</span>
           <hr />
         </h1>
         <Radio.Group
@@ -72,11 +70,11 @@ function Login() {
           rules={getAntdInputValidation()}
         >
           <Input type="password" />
-        </Form.Item>{" "}
+        </Form.Item>
         <Button type="primary" block className="" htmlType="sumbit">
           Σύνδεση
         </Button>
-        <Link to="/register" className=" text-center text-gray-600 underline">
+        <Link to="/register" className="text-center text-gray-600 underline">
           Δεν έχετε λογαριασμό; Κάνε εγγραφή!
         </Link>
       </Form>

@@ -61,7 +61,10 @@ function InventoryForm({ open, setOpen, reloadData }) {
           name="bloodGroup"
           rules={getAntdInputValidation()}
         >
-          <select name="" id="">
+          <select>
+            <option value="" disabled selected>
+              Επιλέξτε ομάδα αίματος
+            </option>
             <option value="a+">A+</option>
             <option value="a-">A-</option>
             <option value="b+">B+</option>
@@ -80,7 +83,7 @@ function InventoryForm({ open, setOpen, reloadData }) {
           name="email"
           rules={getAntdInputValidation()}
         >
-          <input type="email" />
+          <input type="email" placeholder="Εισάγετε email" />
         </Form.Item>
 
         <Form.Item
@@ -88,7 +91,7 @@ function InventoryForm({ open, setOpen, reloadData }) {
           name="quantity"
           rules={getAntdInputValidation()}
         >
-          <input type="number" />
+          <input type="number" placeholder="Εισάγετε ποσότητα" />
         </Form.Item>
       </Form>
     </Modal>
