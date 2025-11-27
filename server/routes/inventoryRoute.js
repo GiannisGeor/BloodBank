@@ -9,14 +9,14 @@ router.post("/add", authMiddleware, async (req, res) => {
   try {
     // validate email and inventoryType
     const user = await User.findOne({ email: req.body.email });
-    if (!user) throw new Error("Invalid Email");
+    if (!user) throw new Error("Μη έγκυρο Email");
 
     if (req.body.inventoryType === "in" && user.userType !== "donor") {
-      throw new Error("This email is not registered as a donor");
+      throw new Error("Αυτό το email δεν είναι εγγεγραμμένο ως αιμοδότης");
     }
 
     if (req.body.inventoryType === "out" && user.userType !== "hospital") {
-      throw new Error("This email is not registered as a hospital");
+      throw new Error("Αυτό το email δεν είναι εγγεγραμμένο ως νοσοκομείο");
     }
 
     // set organization
@@ -44,7 +44,10 @@ router.post("/add", authMiddleware, async (req, res) => {
         },
       ]);
 
-      const totalIn = totalInOfRequestedGroup[0].total || 0;
+      const totalIn =
+        totalInOfRequestedGroup.length > 0
+          ? totalInOfRequestedGroup[0].total
+          : 0;
 
       const totalOutOfRequestedGroup = await Inventory.aggregate([
         {
@@ -62,13 +65,22 @@ router.post("/add", authMiddleware, async (req, res) => {
         },
       ]);
 
-      const totalOut = totalOutOfRequestedGroup[0]?.total || 0;
+      const totalOut =
+        totalOutOfRequestedGroup.length > 0
+          ? totalOutOfRequestedGroup[0].total
+          : 0;
 
       const availableQuantityOfRequestedGroup = totalIn - totalOut;
 
+      if (availableQuantityOfRequestedGroup === 0) {
+        throw new Error(
+          `Δεν υπάρχει διαθέσιμο αίμα ομάδας ${requestedGroup.toUpperCase()} στο απόθεμα`
+        );
+      }
+
       if (availableQuantityOfRequestedGroup < requestedQuantity) {
         throw new Error(
-          `only ${availableQuantityOfRequestedGroup} units of ${requestedGroup.toUpperCase()} is available`
+          `Διαθέσιμες μόνο ${availableQuantityOfRequestedGroup} μονάδες αίματος ομάδας ${requestedGroup.toUpperCase()}`
         );
       }
       req.body.hospital = user._id;
@@ -79,7 +91,10 @@ router.post("/add", authMiddleware, async (req, res) => {
     const inventory = new Inventory(req.body);
     await inventory.save();
 
-    return res.send({ success: true, message: "Inventory Added Successfully" });
+    return res.send({
+      success: true,
+      message: "Το απόθεμα προστέθηκε επιτυχώς",
+    });
   } catch (error) {
     return res.send({ success: false, message: error.message });
   }
@@ -100,7 +115,7 @@ router.get("/get", authMiddleware, async (req, res) => {
   }
 });
 
-//get inventory
+//get inventory with filters
 router.post("/filter", authMiddleware, async (req, res) => {
   try {
     const inventory = await Inventory.find(req.body.filters)
